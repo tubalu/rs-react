@@ -1,9 +1,9 @@
 {
   "/_not-found/page": "/_not-found",
   "/games/minesweeper/page": "/games/minesweeper",
-  "/games/page": "/games",
-  "/about/page": "/about",
   "/contact/page": "/contact",
+  "/games/page": "/games",
   "/page": "/",
+  "/about/page": "/about",
   "/portfolio/page": "/portfolio"
 }
