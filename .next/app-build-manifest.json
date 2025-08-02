@@ -1,0 +1,64 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/app/_not-found/page-9d64bfcfad938f97.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/css/b9d35497c95c8c8e.css",
+      "static/chunks/874-437a265a67d6cfee.js",
+      "static/chunks/app/layout-d45128e9205926be.js"
+    ],
+    "/about/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/app/about/page-97fd4cdece8342e1.js"
+    ],
+    "/games/minesweeper/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/css/6e5c7cb3dbacc6d0.css",
+      "static/chunks/app/games/minesweeper/page-08b2fe8461f3d509.js"
+    ],
+    "/games/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/874-437a265a67d6cfee.js",
+      "static/chunks/app/games/page-d7b9c60368f9f306.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/app/page-97fd4cdece8342e1.js"
+    ],
+    "/contact/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/app/contact/page-97fd4cdece8342e1.js"
+    ],
+    "/portfolio/page": [
+      "static/chunks/webpack-4011a27d336b516e.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/964-9b249bc0ac5a9a8b.js",
+      "static/chunks/main-app-f9770cd95b1e55f3.js",
+      "static/chunks/app/portfolio/page-97fd4cdece8342e1.js"
+    ]
+  }
+}
