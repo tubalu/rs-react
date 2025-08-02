@@ -1,34 +1,28 @@
-import { useState } from 'react';
-import Menu from './Menu';
-import Minesweeper from './Minesweeper';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Menu from './components/layout/Menu';
+import Home from './pages/Home';
+import About from './pages/About';
+import Games from './pages/Games';
+import Portfolio from './pages/Portfolio';
+import Contact from './pages/Contact';
+import MinesweeperGame from './pages/MinesweeperGame';
+import './styles/App.css';
 
 const App = () => {
-  const [currentView, setCurrentView] = useState('home');
-
-  const renderContent = () => {
-    switch (currentView) {
-      case 'games':
-        return (
-          <div className="games-container">
-            <Minesweeper />
-          </div>
-        );
-      default:
-        return (
-          <div className="content">
-            <h1>Rsbuild with React</h1>
-            <p>Start building amazing things with Rsbuild..</p>
-          </div>
-        );
-    }
-  };
-
   return (
-    <div className="app">
-      <Menu onNavigate={setCurrentView} />
-      {renderContent()}
-    </div>
+    <Router>
+      <div className="app">
+        <Menu />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/games/minesweeper" element={<MinesweeperGame />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

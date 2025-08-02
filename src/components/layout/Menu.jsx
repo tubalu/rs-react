@@ -1,42 +1,46 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Menu.css';
 
-const Menu = ({ onNavigate }) => {
+const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const menuItems = [
-    { label: 'Home', key: 'home' },
-    { label: 'About', key: 'about' },
-    { label: 'Games', key: 'games' },
-    { label: 'Portfolio', key: 'portfolio' },
-    { label: 'Contact', key: 'contact' }
+    { label: 'Home', path: '/' },
+    { label: 'About', path: '/about' },
+    { label: 'Games', path: '/games' },
+    { label: 'Portfolio', path: '/portfolio' },
+    { label: 'Contact', path: '/contact' }
   ];
 
-  const handleMenuClick = (key) => {
+  const handleMenuClick = () => {
     setIsOpen(false);
-    onNavigate(key);
   };
 
   return (
     <nav className="menu">
       <div className="menu-container">
         <div className="menu-logo">
-          <span>Logo</span>
+          <Link to="/" onClick={handleMenuClick}>
+            <span>Logo</span>
+          </Link>
         </div>
         
         <div className={`menu-items ${isOpen ? 'menu-items-open' : ''}`}>
           {menuItems.map((item, index) => (
-            <button 
+            <Link 
               key={index}
-              className="menu-item"
-              onClick={() => handleMenuClick(item.key)}
+              to={item.path}
+              className={`menu-item ${location.pathname === item.path ? 'active' : ''}`}
+              onClick={handleMenuClick}
             >
               {item.label}
-            </button>
+            </Link>
           ))}
         </div>
 

@@ -61,8 +61,13 @@
   transition: width 0.3s ease;
 }
 
-.menu-item:hover::after {
+.menu-item:hover::after,
+.menu-item.active::after {
   width: 100%;
+}
+
+.menu-item.active {
+  color: #fff;
 }
 
 .menu-toggle {
