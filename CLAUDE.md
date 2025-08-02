@@ -9,13 +9,13 @@ This is a React application built with Rsbuild, a modern web bundler. The projec
 ## Essential Commands
 
 ### Development
-- `pnpm dev` - Start development server with auto-reload
-- `pnpm build` - Build for production 
-- `pnpm preview` - Preview production build locally
+- `npm run dev` - Start development server with auto-reload
+- `npm run build` - Build for production 
+- `npm run preview` - Preview production build locally
 
 ### Code Quality
-- `pnpm check` - Run Biome linter and apply fixes
-- `pnpm format` - Format code using Biome
+- `npm run check` - Run Biome linter and apply fixes
+- `npm run format` - Format code using Biome
 
 ## Architecture
 
@@ -39,4 +39,4 @@ This is a React application built with Rsbuild, a modern web bundler. The projec
 
 ## Package Manager
 
-This project uses `pnpm` as specified in the README. Always use `pnpm` commands instead of `npm` or `yarn`.
+This project uses `npm` for package management and deployment compatibility with Vercel. Always use `npm` commands.
