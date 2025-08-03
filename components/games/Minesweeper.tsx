@@ -14,6 +14,7 @@ const Minesweeper = () => {
   const [time, setTime] = useState(0);
   const [firstClick, setFirstClick] = useState(true);
   const [mouseButtons, setMouseButtons] = useState({ left: false, right: false });
+  const [hoveredCell, setHoveredCell] = useState<{row: number, col: number} | null>(null);
 
   const createEmptyBoard = useCallback(() => {
     return Array(ROWS).fill(null).map(() =>
@@ -265,8 +266,10 @@ const Minesweeper = () => {
   const handleMouseDown = (e: React.MouseEvent, row: number, col: number) => {
     if (e.button === 0) { // Left button
       setMouseButtons(prev => ({ ...prev, left: true }));
+      setHoveredCell({ row, col });
     } else if (e.button === 2) { // Right button
       setMouseButtons(prev => ({ ...prev, right: true }));
+      setHoveredCell({ row, col });
     }
   };
 
@@ -276,6 +279,7 @@ const Minesweeper = () => {
 
     if (e.button === 0) { // Left button
       setMouseButtons(prev => ({ ...prev, left: false }));
+      setHoveredCell(null);
       
       // If both buttons were down, perform chord click
       if (wasLeftDown && wasRightDown) {
@@ -286,6 +290,7 @@ const Minesweeper = () => {
       }
     } else if (e.button === 2) { // Right button
       setMouseButtons(prev => ({ ...prev, right: false }));
+      setHoveredCell(null);
       
       // If both buttons were down, perform chord click
       if (wasLeftDown && wasRightDown) {
@@ -308,7 +313,7 @@ const Minesweeper = () => {
     return cell.neighborCount;
   };
 
-  const getCellClass = (cell: any) => {
+  const getCellClass = (cell: any, rowIndex: number, colIndex: number) => {
     let className = 'cell';
     if (cell.isRevealed) {
       className += ' revealed';
@@ -316,6 +321,16 @@ const Minesweeper = () => {
       else if (cell.neighborCount > 0) className += ` number-${cell.neighborCount}`;
     } else {
       className += ' hidden';
+      
+      // Add pressed state for chord clicking on 9 cells around hovered cell
+      if (mouseButtons.left && mouseButtons.right && !cell.isFlagged && hoveredCell) {
+        const rowDiff = Math.abs(rowIndex - hoveredCell.row);
+        const colDiff = Math.abs(colIndex - hoveredCell.col);
+        // Check if this cell is within the 3x3 grid around the hovered cell
+        if (rowDiff <= 1 && colDiff <= 1) {
+          className += ' pressed';
+        }
+      }
     }
     return className;
   };
@@ -336,7 +351,7 @@ const Minesweeper = () => {
             {row.map((cell: any, colIndex: number) => (
               <button
                 key={`${rowIndex}-${colIndex}`}
-                className={getCellClass(cell)}
+                className={getCellClass(cell, rowIndex, colIndex)}
                 onMouseDown={(e) => handleMouseDown(e, rowIndex, colIndex)}
                 onMouseUp={(e) => handleMouseUp(e, rowIndex, colIndex)}
                 onContextMenu={(e) => {

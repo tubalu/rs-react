@@ -83,6 +83,12 @@
   border: 1px inset #c0c0c0;
 }
 
+.cell.hidden.pressed {
+  border: 1px inset #c0c0c0;
+  background: #b8b8b8;
+  transform: translateY(1px);
+}
+
 .cell.revealed {
   border: 1px solid #808080;
   background: #c0c0c0;
