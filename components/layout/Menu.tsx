@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import './Menu.css';
 
 const Menu = () => {
@@ -18,7 +18,7 @@ const Menu = () => {
     { label: 'About', path: '/about' },
     { label: 'Games', path: '/games' },
     { label: 'Portfolio', path: '/portfolio' },
-    { label: 'Contact', path: '/contact' }
+    { label: 'Contact', path: '/contact' },
   ];
 
   const handleMenuClick = () => {
@@ -33,11 +33,11 @@ const Menu = () => {
             <span>Logo</span>
           </Link>
         </div>
-        
+
         <div className={`menu-items ${isOpen ? 'menu-items-open' : ''}`}>
-          {menuItems.map((item, index) => (
-            <Link 
-              key={index}
+          {menuItems.map((item) => (
+            <Link
+              key={item.path}
               href={item.path}
               className={`menu-item ${pathname === item.path ? 'active' : ''}`}
               onClick={handleMenuClick}
@@ -47,14 +47,15 @@ const Menu = () => {
           ))}
         </div>
 
-        <button 
+        <button
+          type="button"
           className={`menu-toggle ${isOpen ? 'menu-toggle-open' : ''}`}
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
         </button>
       </div>
     </nav>

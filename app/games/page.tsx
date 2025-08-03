@@ -3,7 +3,8 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Games - React Minesweeper',
-  description: 'Explore our collection of games including the classic Minesweeper built with React.',
+  description:
+    'Explore our collection of games including the classic Minesweeper built with React.',
 };
 
 export default function GamesPage() {

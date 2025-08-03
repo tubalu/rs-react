@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Home - React Minesweeper',
-  description: 'Welcome to the React Minesweeper application built with Next.js and modern web technologies.',
+  description:
+    'Welcome to the React Minesweeper application built with Next.js and modern web technologies.',
 };
 
 export default function HomePage() {

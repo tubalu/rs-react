@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contact - React Minesweeper',
-  description: 'Get in touch with me for questions, collaborations, or project inquiries.',
+  description:
+    'Get in touch with me for questions, collaborations, or project inquiries.',
 };
 
 export default function ContactPage() {

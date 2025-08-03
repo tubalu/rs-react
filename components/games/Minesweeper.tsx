@@ -1,71 +1,101 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './Minesweeper.css';
+
+interface Cell {
+  id: string;
+  isMine: boolean;
+  isRevealed: boolean;
+  isFlagged: boolean;
+  neighborCount: number;
+}
 
 const Minesweeper = () => {
   const ROWS = 16;
   const COLS = 16;
   const MINES = 40;
 
-  const [board, setBoard] = useState<any[]>([]);
-  const [gameState, setGameState] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [board, setBoard] = useState<Cell[][]>([]);
+  const [gameState, setGameState] = useState<'playing' | 'won' | 'lost'>(
+    'playing',
+  );
   const [mineCount, setMineCount] = useState(MINES);
   const [time, setTime] = useState(0);
   const [firstClick, setFirstClick] = useState(true);
-  const [mouseButtons, setMouseButtons] = useState({ left: false, right: false });
-  const [hoveredCell, setHoveredCell] = useState<{row: number, col: number} | null>(null);
+  const [mouseButtons, setMouseButtons] = useState({
+    left: false,
+    right: false,
+  });
+  const [hoveredCell, setHoveredCell] = useState<{
+    row: number;
+    col: number;
+  } | null>(null);
 
   const createEmptyBoard = useCallback(() => {
-    return Array(ROWS).fill(null).map(() =>
-      Array(COLS).fill(null).map(() => ({
-        isMine: false,
-        isRevealed: false,
-        isFlagged: false,
-        neighborCount: 0
-      }))
-    );
+    return Array(ROWS)
+      .fill(null)
+      .map((_, rowIndex) =>
+        Array(COLS)
+          .fill(null)
+          .map((_, colIndex) => ({
+            id: `${rowIndex}-${colIndex}`,
+            isMine: false,
+            isRevealed: false,
+            isFlagged: false,
+            neighborCount: 0,
+          })),
+      );
   }, []);
 
-  const placeMines = useCallback((board: any[][], firstClickRow: number, firstClickCol: number) => {
-    const newBoard = board.map(row => row.map(cell => ({ ...cell })));
-    let minesPlaced = 0;
+  const placeMines = useCallback(
+    (board: Cell[][], firstClickRow: number, firstClickCol: number) => {
+      const newBoard = board.map((row) => row.map((cell) => ({ ...cell })));
+      let minesPlaced = 0;
 
-    while (minesPlaced < MINES) {
-      const row = Math.floor(Math.random() * ROWS);
-      const col = Math.floor(Math.random() * COLS);
+      while (minesPlaced < MINES) {
+        const row = Math.floor(Math.random() * ROWS);
+        const col = Math.floor(Math.random() * COLS);
 
-      // Don't place mine on first click or if already has mine
-      if (!newBoard[row][col].isMine && 
-          !(row === firstClickRow && col === firstClickCol)) {
-        newBoard[row][col].isMine = true;
-        minesPlaced++;
-      }
-    }
-
-    // Calculate neighbor counts
-    for (let row = 0; row < ROWS; row++) {
-      for (let col = 0; col < COLS; col++) {
-        if (!newBoard[row][col].isMine) {
-          let count = 0;
-          for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
-              const newRow = row + i;
-              const newCol = col + j;
-              if (newRow >= 0 && newRow < ROWS && 
-                  newCol >= 0 && newCol < COLS && 
-                  newBoard[newRow][newCol].isMine) {
-                count++;
-              }
-            }
-          }
-          newBoard[row][col].neighborCount = count;
+        // Don't place mine on first click or if already has mine
+        if (
+          !newBoard[row][col].isMine &&
+          !(row === firstClickRow && col === firstClickCol)
+        ) {
+          newBoard[row][col].isMine = true;
+          minesPlaced++;
         }
       }
-    }
 
-    return newBoard;
-  }, []);
+      // Calculate neighbor counts
+      for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+          if (!newBoard[row][col].isMine) {
+            let count = 0;
+            for (let i = -1; i <= 1; i++) {
+              for (let j = -1; j <= 1; j++) {
+                const newRow = row + i;
+                const newCol = col + j;
+                if (
+                  newRow >= 0 &&
+                  newRow < ROWS &&
+                  newCol >= 0 &&
+                  newCol < COLS &&
+                  newBoard[newRow][newCol].isMine
+                ) {
+                  count++;
+                }
+              }
+            }
+            newBoard[row][col].neighborCount = count;
+          }
+        }
+      }
+
+      return newBoard;
+    },
+    [],
+  );
 
   const initializeGame = useCallback(() => {
     const newBoard = createEmptyBoard();
@@ -84,14 +114,18 @@ const Minesweeper = () => {
     let interval: NodeJS.Timeout;
     if (gameState === 'playing' && !firstClick) {
       interval = setInterval(() => {
-        setTime(prev => Math.min(prev + 1, 999));
+        setTime((prev) => Math.min(prev + 1, 999));
       }, 1000);
     }
     return () => clearInterval(interval);
   }, [gameState, firstClick]);
 
   const revealCell = (row: number, col: number) => {
-    if (gameState !== 'playing' || board[row][col].isRevealed || board[row][col].isFlagged) {
+    if (
+      gameState !== 'playing' ||
+      board[row][col].isRevealed ||
+      board[row][col].isFlagged
+    ) {
       return;
     }
 
@@ -104,8 +138,14 @@ const Minesweeper = () => {
     }
 
     const revealCells = (r: number, c: number) => {
-      if (r < 0 || r >= ROWS || c < 0 || c >= COLS || 
-          newBoard[r][c].isRevealed || newBoard[r][c].isFlagged) {
+      if (
+        r < 0 ||
+        r >= ROWS ||
+        c < 0 ||
+        c >= COLS ||
+        newBoard[r][c].isRevealed ||
+        newBoard[r][c].isFlagged
+      ) {
         return;
       }
 
@@ -162,8 +202,10 @@ const Minesweeper = () => {
 
     const newBoard = [...board];
     newBoard[row][col].isFlagged = !newBoard[row][col].isFlagged;
-    
-    setMineCount(prev => newBoard[row][col].isFlagged ? prev - 1 : prev + 1);
+
+    setMineCount((prev) =>
+      newBoard[row][col].isFlagged ? prev - 1 : prev + 1,
+    );
     setBoard(newBoard);
   };
 
@@ -173,7 +215,13 @@ const Minesweeper = () => {
       for (let j = -1; j <= 1; j++) {
         const newRow = row + i;
         const newCol = col + j;
-        if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS && !(i === 0 && j === 0)) {
+        if (
+          newRow >= 0 &&
+          newRow < ROWS &&
+          newCol >= 0 &&
+          newCol < COLS &&
+          !(i === 0 && j === 0)
+        ) {
           adjacent.push({ row: newRow, col: newCol });
         }
       }
@@ -182,13 +230,19 @@ const Minesweeper = () => {
   };
 
   const chordClick = (row: number, col: number) => {
-    if (gameState !== 'playing' || !board[row][col].isRevealed || board[row][col].isMine) {
+    if (
+      gameState !== 'playing' ||
+      !board[row][col].isRevealed ||
+      board[row][col].isMine
+    ) {
       return;
     }
 
     const adjacentCells = getAdjacentCells(row, col);
-    const flaggedCount = adjacentCells.filter(({row: r, col: c}) => board[r][c].isFlagged).length;
-    
+    const flaggedCount = adjacentCells.filter(
+      ({ row: r, col: c }) => board[r][c].isFlagged,
+    ).length;
+
     // Only chord if the number of flags matches the cell's number
     if (flaggedCount === board[row][col].neighborCount) {
       const newBoard = [...board];
@@ -202,8 +256,14 @@ const Minesweeper = () => {
       }
 
       const revealCells = (r: number, c: number) => {
-        if (r < 0 || r >= ROWS || c < 0 || c >= COLS || 
-            newBoard[r][c].isRevealed || newBoard[r][c].isFlagged) {
+        if (
+          r < 0 ||
+          r >= ROWS ||
+          c < 0 ||
+          c >= COLS ||
+          newBoard[r][c].isRevealed ||
+          newBoard[r][c].isFlagged
+        ) {
           return;
         }
 
@@ -224,11 +284,11 @@ const Minesweeper = () => {
       };
 
       // Reveal all unflagged adjacent cells
-      adjacentCells.forEach(({row: r, col: c}) => {
+      for (const { row: r, col: c } of adjacentCells) {
         if (!newBoard[r][c].isFlagged) {
           revealCells(r, c);
         }
-      });
+      }
 
       if (hitMine) {
         setGameState('lost');
@@ -264,11 +324,13 @@ const Minesweeper = () => {
   };
 
   const handleMouseDown = (e: React.MouseEvent, row: number, col: number) => {
-    if (e.button === 0) { // Left button
-      setMouseButtons(prev => ({ ...prev, left: true }));
+    if (e.button === 0) {
+      // Left button
+      setMouseButtons((prev) => ({ ...prev, left: true }));
       setHoveredCell({ row, col });
-    } else if (e.button === 2) { // Right button
-      setMouseButtons(prev => ({ ...prev, right: true }));
+    } else if (e.button === 2) {
+      // Right button
+      setMouseButtons((prev) => ({ ...prev, right: true }));
       setHoveredCell({ row, col });
     }
   };
@@ -277,10 +339,11 @@ const Minesweeper = () => {
     const wasLeftDown = mouseButtons.left;
     const wasRightDown = mouseButtons.right;
 
-    if (e.button === 0) { // Left button
-      setMouseButtons(prev => ({ ...prev, left: false }));
+    if (e.button === 0) {
+      // Left button
+      setMouseButtons((prev) => ({ ...prev, left: false }));
       setHoveredCell(null);
-      
+
       // If both buttons were down, perform chord click
       if (wasLeftDown && wasRightDown) {
         chordClick(row, col);
@@ -288,10 +351,11 @@ const Minesweeper = () => {
         // Normal left click only if right wasn't also down
         revealCell(row, col);
       }
-    } else if (e.button === 2) { // Right button
-      setMouseButtons(prev => ({ ...prev, right: false }));
+    } else if (e.button === 2) {
+      // Right button
+      setMouseButtons((prev) => ({ ...prev, right: false }));
       setHoveredCell(null);
-      
+
       // If both buttons were down, perform chord click
       if (wasLeftDown && wasRightDown) {
         chordClick(row, col);
@@ -305,7 +369,7 @@ const Minesweeper = () => {
     return '🙂';
   };
 
-  const getCellContent = (cell: any) => {
+  const getCellContent = (cell: Cell) => {
     if (cell.isFlagged) return '🚩';
     if (!cell.isRevealed) return '';
     if (cell.isMine) return '💣';
@@ -313,17 +377,23 @@ const Minesweeper = () => {
     return cell.neighborCount;
   };
 
-  const getCellClass = (cell: any, rowIndex: number, colIndex: number) => {
+  const getCellClass = (cell: Cell, rowIndex: number, colIndex: number) => {
     let className = 'cell';
     if (cell.isRevealed) {
       className += ' revealed';
       if (cell.isMine) className += ' mine';
-      else if (cell.neighborCount > 0) className += ` number-${cell.neighborCount}`;
+      else if (cell.neighborCount > 0)
+        className += ` number-${cell.neighborCount}`;
     } else {
       className += ' hidden';
-      
+
       // Add pressed state for chord clicking on 9 cells around hovered cell
-      if (mouseButtons.left && mouseButtons.right && !cell.isFlagged && hoveredCell) {
+      if (
+        mouseButtons.left &&
+        mouseButtons.right &&
+        !cell.isFlagged &&
+        hoveredCell
+      ) {
         const rowDiff = Math.abs(rowIndex - hoveredCell.row);
         const colDiff = Math.abs(colIndex - hoveredCell.col);
         // Check if this cell is within the 3x3 grid around the hovered cell
@@ -339,18 +409,20 @@ const Minesweeper = () => {
     <div className="minesweeper">
       <div className="game-header">
         <div className="counter">{String(mineCount).padStart(3, '0')}</div>
-        <button className="reset-button" onClick={initializeGame}>
+        <button type="button" className="reset-button" onClick={initializeGame}>
           {getFaceEmoji()}
         </button>
         <div className="counter">{String(time).padStart(3, '0')}</div>
       </div>
-      
+
       <div className="game-board">
         {board.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell: any, colIndex: number) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: Fixed grid positions never reorder
+          <div key={`game-row-${rowIndex}`} className="row">
+            {row.map((cell: Cell, colIndex: number) => (
               <button
-                key={`${rowIndex}-${colIndex}`}
+                type="button"
+                key={cell.id}
                 className={getCellClass(cell, rowIndex, colIndex)}
                 onMouseDown={(e) => handleMouseDown(e, rowIndex, colIndex)}
                 onMouseUp={(e) => handleMouseUp(e, rowIndex, colIndex)}

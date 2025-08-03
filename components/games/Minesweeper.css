@@ -1,5 +1,5 @@
 .minesweeper {
-  font-family: 'MS Sans Serif', sans-serif;
+  font-family: "MS Sans Serif", sans-serif;
   background: #c0c0c0;
   border: 2px outset #c0c0c0;
   padding: 6px;
@@ -19,7 +19,7 @@
 .counter {
   background: #000;
   color: #ff0000;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 18px;
   font-weight: bold;
   padding: 2px 4px;
@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'MS Sans Serif', sans-serif;
+  font-family: "MS Sans Serif", sans-serif;
   background: #c0c0c0;
 }
 
@@ -138,69 +138,44 @@
 
 /* Windows 3.1 style scrollbars and window chrome */
 .minesweeper {
-  box-shadow: 
-    inset -1px -1px #0a0a0a,
-    inset 1px 1px #dfdfdf,
-    inset -2px -2px #808080,
-    inset 2px 2px #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px
+    #808080, inset 2px 2px #c0c0c0;
 }
 
 .game-header {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #0a0a0a,
-    inset -2px -2px #c0c0c0,
-    inset 2px 2px #808080;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, inset -2px -2px
+    #c0c0c0, inset 2px 2px #808080;
 }
 
 .counter {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #0a0a0a,
-    inset -2px -2px #c0c0c0,
-    inset 2px 2px #808080;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, inset -2px -2px
+    #c0c0c0, inset 2px 2px #808080;
 }
 
 .reset-button {
-  box-shadow: 
-    inset -1px -1px #0a0a0a,
-    inset 1px 1px #dfdfdf,
-    inset -2px -2px #808080,
-    inset 2px 2px #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px
+    #808080, inset 2px 2px #c0c0c0;
 }
 
 .reset-button:active {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #0a0a0a,
-    inset -2px -2px #c0c0c0,
-    inset 2px 2px #808080;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, inset -2px -2px
+    #c0c0c0, inset 2px 2px #808080;
 }
 
 .game-board {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #0a0a0a,
-    inset -2px -2px #c0c0c0,
-    inset 2px 2px #808080;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, inset -2px -2px
+    #c0c0c0, inset 2px 2px #808080;
 }
 
 .cell.hidden {
-  box-shadow: 
-    inset -1px -1px #0a0a0a,
-    inset 1px 1px #dfdfdf,
-    inset -2px -2px #808080,
-    inset 2px 2px #c0c0c0;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px
+    #808080, inset 2px 2px #c0c0c0;
 }
 
 .cell.hidden:active {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #0a0a0a;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a;
 }
 
 .cell.revealed {
-  box-shadow: 
-    inset -1px -1px #dfdfdf,
-    inset 1px 1px #808080;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #808080;
 }

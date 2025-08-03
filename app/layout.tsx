@@ -4,7 +4,8 @@ import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'React Minesweeper - Games & Portfolio',
-  description: 'A modern React application featuring Minesweeper game and portfolio showcase built with Next.js',
+  description:
+    'A modern React application featuring Minesweeper game and portfolio showcase built with Next.js',
   keywords: ['React', 'Next.js', 'Minesweeper', 'Games', 'Portfolio'],
   authors: [{ name: 'Your Name' }],
 };
@@ -24,9 +25,7 @@ export default function RootLayout({
       <body>
         <div className="app">
           <Menu />
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
         </div>
       </body>
     </html>

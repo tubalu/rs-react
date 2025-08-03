@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Portfolio - React Minesweeper',
-  description: 'Explore my development projects and portfolio showcasing modern web development skills.',
+  description:
+    'Explore my development projects and portfolio showcasing modern web development skills.',
 };
 
 export default function PortfolioPage() {
@@ -13,7 +14,9 @@ export default function PortfolioPage() {
       <div className="portfolio-grid">
         <div className="project-card">
           <h3>React Minesweeper</h3>
-          <p>A fully featured Minesweeper game built with React hooks and Next.js</p>
+          <p>
+            A fully featured Minesweeper game built with React hooks and Next.js
+          </p>
         </div>
       </div>
     </div>
