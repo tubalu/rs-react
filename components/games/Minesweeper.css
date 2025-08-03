@@ -3,7 +3,70 @@
   background: #c0c0c0;
   border: 2px outset #c0c0c0;
   padding: 6px;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: visible;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+/* Special styling for nightmare level to fit screen */
+.minesweeper.nightmare-mode {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 4px;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
+.minesweeper.nightmare-mode .difficulty-selector {
+  max-width: calc(100vw - 20px);
+}
+
+.minesweeper.nightmare-mode .game-header {
+  max-width: calc(100vw - 20px);
+}
+
+.minesweeper.nightmare-mode .game-board {
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 180px);
+  overflow: auto;
+  align-self: flex-start;
+}
+
+.difficulty-selector {
+  background: #c0c0c0;
+  border: 2px inset #c0c0c0;
+  padding: 8px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, inset -2px -2px
+    #c0c0c0, inset 2px 2px #808080;
+}
+
+.difficulty-selector label {
+  font-weight: bold;
+  color: #000;
+  font-size: 12px;
+}
+
+.difficulty-select {
+  background: #ffffff;
+  border: 1px inset #c0c0c0;
+  padding: 2px 4px;
+  font-family: "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  color: #000;
+  min-width: 200px;
 }
 
 .game-header {
@@ -14,6 +77,9 @@
   border: 2px inset #c0c0c0;
   padding: 4px 8px;
   margin-bottom: 6px;
+  width: 100%;
+  max-width: 400px;
+  min-width: 200px;
 }
 
 .counter {
@@ -50,6 +116,76 @@
   border: 2px inset #c0c0c0;
   background: #c0c0c0;
   display: inline-block;
+  min-width: min-content;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+/* Center small boards like beginner mode */
+.minesweeper:not(.nightmare-mode) .game-board {
+  align-self: center;
+}
+
+/* Specific styling for smaller boards to ensure perfect centering */
+.minesweeper:not(.nightmare-mode) {
+  min-height: auto;
+  justify-content: center;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+/* Responsive adjustments for different difficulty levels */
+@media (max-width: 768px) {
+  .minesweeper {
+    padding: 4px;
+  }
+
+  .difficulty-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .difficulty-select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .cell {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .counter {
+    font-size: 16px;
+    min-width: 36px;
+  }
+
+  .reset-button {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cell {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+
+  .counter {
+    font-size: 14px;
+    min-width: 32px;
+  }
+
+  .reset-button {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
 }
 
 .row {

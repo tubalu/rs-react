@@ -11,10 +11,96 @@ interface Cell {
   neighborCount: number;
 }
 
+interface DifficultyLevel {
+  name: string;
+  rows: number;
+  cols: number;
+  mines: number;
+  description: string;
+}
+
+const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
+  beginner: {
+    name: 'Beginner',
+    rows: 9,
+    cols: 9,
+    mines: 10,
+    description: '9×9 grid, 10 mines',
+  },
+  intermediate: {
+    name: 'Intermediate',
+    rows: 16,
+    cols: 16,
+    mines: 40,
+    description: '16×16 grid, 40 mines',
+  },
+  expert: {
+    name: 'Expert',
+    rows: 16,
+    cols: 30,
+    mines: 99,
+    description: '16×30 grid, 99 mines',
+  },
+  nightmare: {
+    name: 'Nightmare',
+    rows: 20,
+    cols: 35,
+    mines: 150,
+    description: '20×35 grid, 150 mines',
+  },
+};
+
 const Minesweeper = () => {
-  const ROWS = 16;
-  const COLS = 16;
-  const MINES = 40;
+  const [currentDifficulty, setCurrentDifficulty] =
+    useState<string>('intermediate');
+  const [screenDimensions, setScreenDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  // Calculate dynamic dimensions for Nightmare level
+  const calculateNightmareDimensions = () => {
+    if (typeof window === 'undefined')
+      return { rows: 20, cols: 35, mines: 150 };
+
+    // Cell size including borders (approximately 22px per cell)
+    const cellSize = 22;
+    // Reserve space for UI elements (difficulty selector, header, padding)
+    const reservedHeight = 180;
+    const reservedWidth = 40;
+
+    // Calculate available space
+    const availableWidth = screenDimensions.width - reservedWidth;
+    const availableHeight = screenDimensions.height - reservedHeight;
+
+    // Calculate maximum grid dimensions
+    const maxCols = Math.floor(availableWidth / cellSize);
+    const maxRows = Math.floor(availableHeight / cellSize);
+
+    // Ensure minimum dimensions and reasonable limits
+    const cols = Math.max(25, Math.min(maxCols, 50));
+    const rows = Math.max(15, Math.min(maxRows, 35));
+
+    // Calculate mines (approximately 22% density for nightmare)
+    const totalCells = rows * cols;
+    const mines = Math.floor(totalCells * 0.22);
+
+    return { rows, cols, mines };
+  };
+
+  const nightmareDims = calculateNightmareDimensions();
+  const difficulty =
+    currentDifficulty === 'nightmare'
+      ? {
+          ...DIFFICULTY_LEVELS.nightmare,
+          ...nightmareDims,
+          description: `${nightmareDims.rows}×${nightmareDims.cols} grid, ${nightmareDims.mines} mines (Screen-Fitted)`,
+        }
+      : DIFFICULTY_LEVELS[currentDifficulty];
+
+  const ROWS = difficulty.rows;
+  const COLS = difficulty.cols;
+  const MINES = difficulty.mines;
 
   const [board, setBoard] = useState<Cell[][]>([]);
   const [gameState, setGameState] = useState<'playing' | 'won' | 'lost'>(
@@ -46,7 +132,7 @@ const Minesweeper = () => {
             neighborCount: 0,
           })),
       );
-  }, []);
+  }, [ROWS, COLS]);
 
   const placeMines = useCallback(
     (board: Cell[][], firstClickRow: number, firstClickCol: number) => {
@@ -94,7 +180,7 @@ const Minesweeper = () => {
 
       return newBoard;
     },
-    [],
+    [ROWS, COLS, MINES],
   );
 
   const initializeGame = useCallback(() => {
@@ -104,11 +190,46 @@ const Minesweeper = () => {
     setMineCount(MINES);
     setTime(0);
     setFirstClick(true);
-  }, [createEmptyBoard]);
+    setHoveredCell(null);
+    setMouseButtons({ left: false, right: false });
+  }, [createEmptyBoard, MINES]);
 
+  const handleDifficultyChange = (newDifficulty: string) => {
+    setCurrentDifficulty(newDifficulty);
+    // Game will be reinitialized when difficulty changes
+  };
+
+  // Detect screen dimensions for Nightmare level
   useEffect(() => {
-    initializeGame();
-  }, [initializeGame]);
+    const updateDimensions = () => {
+      setScreenDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Initial dimensions
+    updateDimensions();
+
+    // Listen for window resize
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  // Reinitialize game when difficulty changes or screen dimensions change (for Nightmare)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: screenDimensions needed for nightmare mode calculations
+  useEffect(() => {
+    if (currentDifficulty === 'nightmare') {
+      initializeGame();
+    }
+  }, [currentDifficulty, screenDimensions, initializeGame]);
+
+  // Reinitialize game when difficulty changes (for non-nightmare levels)
+  useEffect(() => {
+    if (currentDifficulty !== 'nightmare') {
+      initializeGame();
+    }
+  }, [currentDifficulty, initializeGame]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -406,7 +527,25 @@ const Minesweeper = () => {
   };
 
   return (
-    <div className="minesweeper">
+    <div
+      className={`minesweeper ${currentDifficulty === 'nightmare' ? 'nightmare-mode' : ''}`}
+    >
+      <div className="difficulty-selector">
+        <label htmlFor="difficulty-select">Difficulty:</label>
+        <select
+          id="difficulty-select"
+          value={currentDifficulty}
+          onChange={(e) => handleDifficultyChange(e.target.value)}
+          className="difficulty-select"
+        >
+          {Object.entries(DIFFICULTY_LEVELS).map(([key, level]) => (
+            <option key={key} value={key}>
+              {level.name} - {level.description}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="game-header">
         <div className="counter">{String(mineCount).padStart(3, '0')}</div>
         <button type="button" className="reset-button" onClick={initializeGame}>
